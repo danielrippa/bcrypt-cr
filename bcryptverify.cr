@@ -4,11 +4,22 @@
     password = ARGV[0]
     hash = ARGV[1]
 
+    succeeded = false
+    message = "no match"
+
     begin
-      Crypto::Bcrypt::Password.new(hash).verify(password)
-      puts "ok"
+      succeeded = Crypto::Bcrypt::Password.new(hash).verify(password)
+      if succeeded
+        message = "ok"
+      else
+        message = "no match"
+      end
     rescue e
-      puts "error: #{e.message}"
+      message = "error: #{e.message}"
+    end
+
+    puts message
+    if !succeeded
       exit 1
     end
 
